@@ -1,7 +1,6 @@
-import { Component, EventEmitter, Output, inject, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import type { investmentInput } from '../../models/investment-input.model';
-// import { CalculatorService } from '../../services/calculator.service';
+import { InvestmentService } from '../../services/investment.service';
 
 @Component({
   selector: 'app-user-input',
@@ -11,26 +10,15 @@ import type { investmentInput } from '../../models/investment-input.model';
   styleUrl: './user-input.component.css',
 })
 export class UserInputComponent {
-  // private calculatorService = inject(CalculatorService);
-
-  @Output() calculate = new EventEmitter<investmentInput>();
-
   userInputInitial = signal('0');
   userInputAnnual = signal('0');
   userInputExpected = signal('5');
   userInputDuration = signal('10');
 
-  onSubmit() {
-    //   this.calculatorService.updateData({
-    //     initial: this.userInputInitial,
-    //     annual: this.userInputAnnual,
-    //     expected: this.userInputExpected,
-    //     duration: this.userInputDuration,
-    //   })
-    //   this.calculatorService.checkData();
-    //   this.calculatorService.calculateInvestmentResults();
+  constructor(private investmentService: InvestmentService) {}
 
-    this.calculate.emit({
+  onSubmit() {
+    this.investmentService.calculateInvestmentResults({
       initialInvestment: +this.userInputInitial(),
       duration: +this.userInputDuration(),
       expectedReturn: +this.userInputExpected(),
